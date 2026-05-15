@@ -27,4 +27,22 @@ public class UsuarioDAO {
             return false;
         }
     }
+    
+    // ================= MÉTODO DE CADASTRAR NOVO USUÁRIO =================
+    public void cadastrarUsuario(String email, String senha) {
+        
+        String sql = "INSERT INTO tbusuarios (email, senha) VALUES ('" + email + "', '" + senha + "')";
+        
+        try {
+            Conexao conexaoFabrica = new Conexao();
+            java.sql.Connection conn = conexaoFabrica.getConnection();
+            
+            java.sql.Statement stmt = conn.createStatement();
+            stmt.execute(sql);
+            
+        } catch (Exception e) {
+            System.out.println("Erro ao cadastrar usuário: " + e.getMessage());
+        }
+    }
+    
 }

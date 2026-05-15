@@ -33,6 +33,7 @@ public class Login extends javax.swing.JFrame {
         txtSenha = new javax.swing.JPasswordField();
         senha = new javax.swing.JLabel();
         botaoEntrar = new javax.swing.JButton();
+        btCadastrese = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,6 +47,9 @@ public class Login extends javax.swing.JFrame {
         botaoEntrar.setText("ENTRAR");
         botaoEntrar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 51, 51), new java.awt.Color(51, 255, 0), new java.awt.Color(0, 0, 255), new java.awt.Color(255, 0, 255)));
         botaoEntrar.addActionListener(this::botaoEntrarActionPerformed);
+
+        btCadastrese.setText("Cadastrar");
+        btCadastrese.addActionListener(this::btCadastreseActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,7 +69,10 @@ public class Login extends javax.swing.JFrame {
                         .addGap(179, 179, 179))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(senha, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(178, 178, 178))))
+                        .addGap(178, 178, 178))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btCadastrese)
+                        .addGap(155, 155, 155))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -80,7 +87,9 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(botaoEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btCadastrese)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -91,21 +100,42 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void botaoEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEntrarActionPerformed
-                                                 
+        
+        // 1. Pega os dados digitados
         String emailDigitado = txtEmail.getText();
         String senhaDigitada = new String(txtSenha.getPassword());
         
+        // 2. Chama o DAO
         dao.UsuarioDAO dao = new dao.UsuarioDAO();
         
+        // 3. FAZ A PERGUNTA AO BANCO DE DADOS:
         if (dao.autenticarUsuario(emailDigitado, senhaDigitada)) {
+            
+            // === SE A SENHA ESTIVER CERTA, EXECUTA TUDO QUE ESTÁ AQUI ===
             javax.swing.JOptionPane.showMessageDialog(this, "Acesso liberado! Bem-vinda ao sistema!");
+            
+            TelaPrincipal tela = new TelaPrincipal();
+            tela.setVisible(true);
+            tela.setLocationRelativeTo(null); // Deixa a tela no centro do monitor
+            
+            this.dispose(); // Fecha a tela de login
+            
         } else {
+            
+            // === SE A SENHA ESTIVER ERRADA, EXECUTA AQUI ===
             javax.swing.JOptionPane.showMessageDialog(this, "E-mail ou senha incorretos. Tente novamente.");
+            
         }
-    
+                                         
+       
+    }//GEN-LAST:event_botaoEntrarActionPerformed
+
+    private void btCadastreseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastreseActionPerformed
 
         
-    }//GEN-LAST:event_botaoEntrarActionPerformed
+        new TelaCadastroUsuario().setVisible(true);
+        
+    }//GEN-LAST:event_btCadastreseActionPerformed
 
 //    /**
 //     * @param args the command line arguments
@@ -121,6 +151,7 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoEntrar;
+    private javax.swing.JButton btCadastrese;
     private javax.swing.JLabel email;
     private javax.swing.JLabel senha;
     private javax.swing.JTextField txtEmail;
